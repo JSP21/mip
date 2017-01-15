@@ -23,8 +23,7 @@ class BallTree:
         self.child2 = None
 
         if len(self.data) > 1: # assume the no. of leaf nodes: 1
-            # sort on the dimension with the largest spread so that two pivot points
-            # along the largest axis can be chosen to form ball trees
+            # sort on the dimension with the largest spread so that two pivot points along the largest axis can be chosen to form ball trees
             largest_dim = np.argmax(self.data.max(0) - self.data.min(0))
             i_sort = np.argsort(self.data[:, largest_dim])
             self.data[:] = self.data[i_sort, :]
@@ -81,7 +80,7 @@ res=IP.gen_dist()
 IP.write_csv(res)
 
 #------------------------------------------------------------
-# Use our Ball Tree class to recursively divide the space
+# Ball Tree class to recursively divide the space
 X=res
 BT = BallTree(X)
 
@@ -96,11 +95,7 @@ for level in range(1, 5):
     ax = fig.add_subplot(3, 3, level, xticks=[], yticks=[])
     ax.scatter(X[:, 0], X[:, 1])
     BT.draw_circle(ax, depth=level - 1)
-
-    #ax.set_xlim(-1.35, 1.35)
-    #ax.set_ylim(-1.0, 1.7)
     ax.set_title('level %i' % level)
 
-# suptitle() adds a title to the entire figure
-fig.suptitle('Ball-tree Example')
+fig.suptitle('Ball-tree Construction')
 plt.show()
