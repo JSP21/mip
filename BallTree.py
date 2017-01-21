@@ -74,6 +74,8 @@ class query:
     def __init__(self):
         self.bm = [0,0] #current max-inner-product candidate
         self.curr = -999 #current highest inner-product
+        self.brute_bm = [0,0]
+        self.brute_curr = -999
 
 class Input:
     def __init__(self):
@@ -110,14 +112,42 @@ res=IP.gen_dist()
 X=res
 BT = BallTree(X)
 
+#------------------------------------------------------------
+# Bruteforce method of computing MIP for every query
+brute_max=[]
+for i in X:
+    q_obj = query()
+    for j in X:
+        if (np.array_equal(i,j)==False):
+            tmp=np.dot(i,j)
+            if(tmp > q_obj.brute_curr):
+                q_obj.brute_curr = tmp
+                q_obj.brute_bm=j
+    brute_max.append(q_obj.brute_bm)
+
+
+#------------------------------------------------------------
+#Approximate computation of MIP
+approx_max=[]
 #Considering query points same as that of dataset...find approx. MIP for each
 print("The approx. MIP candidate for every query point is as follows:")
 for i in X:
     q_obj = query()
     BT.TreeSearch(i,q_obj)
     print(q_obj.bm) #print the max-inner-product candidate
-       
+    print(q_obj.curr)
+    approx_max.append(q_obj.bm)
 
+print("brute",brute_max)
+print("approx",approx_max)
+
+cnt=0.0
+for i in range(0,len(brute_max)):
+   if np.array_equal(brute_max[i],approx_max[i])==True:
+            cnt=cnt+1
+
+print("The no. of matches: ",cnt)   
+print("Accuracy of MIP: ",(cnt/30)*100)
 #------------------------------------------------------------
 # Plot four different levels of the Ball tree
 fig = plt.figure(figsize=(5, 5))
