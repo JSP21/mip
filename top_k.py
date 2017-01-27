@@ -71,7 +71,7 @@ class BallTree:
     def TreeSearch(self,i,top_k):
         MIP = (np.dot(self.loc,i)+(self.radius*LA.norm(i)))
         if top_k[0] < MIP: #MIP(q,self)
-            BT.maintain_top_k(MIP,top_k)                      ## UNCOMMENT THIS LINE 
+            #BT.maintain_top_k(MIP,top_k)                      ## UNCOMMENT THIS LINE 
             if self.child1 is None:
                 #print("self data:",self.data)
                 self.LinearSearch(i,self.data,top_k)
